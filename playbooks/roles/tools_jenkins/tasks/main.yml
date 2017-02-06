@@ -5,7 +5,7 @@
   ignore_errors: true
 
 - name: Set the permission on hpi files
-  file: 
+  file:
     path: "{{ item }}"
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
@@ -21,7 +21,7 @@
   ignore_errors: true
 
 - name: Set the permission on jpi files
-  file: 
+  file:
     path: "{{ item }}"
     owner: "{{ jenkins_user }}"
     group: "{{ jenkins_group }}"
@@ -30,6 +30,16 @@
   when: jpi_files
   notify:
     - restart Jenkins
+
+# Required for bok-choy testing on the server itself
+- name: install system packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items: "{{ jenkins_deb_pkgs }}"
+  tags:
+    - install
+    - install:system-requirements
 
 # The deadsnakes PPA is required to install python3.5 on Precise and Trusty.
 # Xenial comes with python3.5 installed.
