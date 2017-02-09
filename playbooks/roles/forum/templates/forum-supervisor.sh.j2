@@ -10,3 +10,8 @@ cd {{ forum_code_dir }}
 {% else %}
 {{ forum_binstubs_dir }}/unicorn -c config/unicorn.rb
 {% endif %}
+
+# If forums fails to start because elasticsearch isn't migrated, sleep so supervisord
+# doesn't attempt to restart it immediately.
+# 101 is the magic exit code forums uses to mean "rake search:validate_index failed"
+[ "$?" -eq 101 ] && sleep {{ FORUM_RESTART_DELAY }}
