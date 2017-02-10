@@ -70,7 +70,7 @@
         --output_file '{{ temp_output_dir.stdout }}/{{ database }}_{{ original_state }}'
         --settings '{{ EDX_PLATFORM_SETTINGS }}'
       become_user: "{{ APPLICATION_USER }}"
-      when: APPLICATION_NAME == "edxapp" and item != "read_replica"
+      when: APPLICATION_NAME == "edxapp"
 
     - name: migrate to original versions
       shell: >
